@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeSwitcher from './ThemeSwitcher';
@@ -9,18 +8,9 @@ const Navbar: React.FC = () => {
   const { t, language } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-    
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -34,71 +24,44 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'py-3 glass shadow-sm' : 'py-5 bg-transparent'
-    }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            <a href="#home" className="flex items-center">
-              <span className="text-2xl font-display font-bold tracking-tight">
-                <span className="text-laravel">&lt;</span>
-                Dev
-                <span className="text-laravel">/&gt;</span>
-              </span>
-            </a>
-          </div>
-          
-          {/* Desktop navigation */}
-          <div className={`hidden md:flex md:items-center md:space-x-8 ${language === 'ar' ? 'md:space-x-reverse rtl' : ''}`}>
+    <nav
+      className={`navbar navbar-expand-md fixed-top transition ${
+        isScrolled ? 'navbar-glass py-2' : 'py-3'
+      }`}
+      style={{ transition: 'all 0.3s ease' }}
+    >
+      <div className="container">
+        <a href="#home" className="navbar-brand fw-bold fs-4">
+          <span className="text-laravel">&lt;</span>Dev<span className="text-laravel">/&gt;</span>
+        </a>
+
+        <button
+          className="navbar-toggler border-0"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        <div className={`collapse navbar-collapse ${isMenuOpen ? 'show' : ''}`}>
+          <ul className={`navbar-nav ms-auto mb-2 mb-md-0 gap-1 ${language === 'ar' ? 'rtl' : ''}`}>
             {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-sm font-medium hover:text-laravel transition-colors duration-200"
-              >
-                {link.name}
-              </a>
+              <li key={link.name} className="nav-item">
+                <a
+                  href={link.href}
+                  className="nav-link fw-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.name}
+                </a>
+              </li>
             ))}
-            <div className="flex items-center space-x-2">
-              <ThemeSwitcher />
-              <LanguageSwitcher />
-            </div>
-          </div>
-          
-          {/* Mobile menu button */}
-          <div className="flex md:hidden">
-            <button
-              onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-laravel"
-            >
-              <Menu className="h-6 w-6" />
-            </button>
+          </ul>
+          <div className="d-flex align-items-center gap-2 ms-md-3">
+            <ThemeSwitcher />
+            <LanguageSwitcher />
           </div>
         </div>
       </div>
-      
-      {/* Mobile menu */}
-      {isMenuOpen && (
-        <div className="md:hidden glass mt-2 py-3 px-2 rounded-b-lg animate-fade-in">
-          <div className={`flex flex-col space-y-3 px-4 pt-2 pb-4 ${language === 'ar' ? 'rtl' : ''}`}>
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-base font-medium hover:text-laravel transition-colors duration-200"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {link.name}
-              </a>
-            ))}
-            <div className="pt-2 flex space-x-2">
-              <ThemeSwitcher />
-              <LanguageSwitcher />
-            </div>
-          </div>
-        </div>
-      )}
     </nav>
   );
 };

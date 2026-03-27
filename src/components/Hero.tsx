@@ -1,84 +1,92 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { ArrowRight, Code, Database, GitBranch } from 'lucide-react';
+
 const Hero: React.FC = () => {
-  const {
-    t
-  } = useLanguage();
-  return <section id="home" className="min-h-screen flex items-center pt-20">
-      <div className="section-container">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8 animate-fade-in">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-laravel/10 text-laravel text-sm font-medium">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-laravel opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-laravel"></span>
+  const { t } = useLanguage();
+
+  return (
+    <section id="home" className="min-vh-100 d-flex align-items-center" style={{ paddingTop: '5rem' }}>
+      <div className="container py-5">
+        <div className="row align-items-center g-5">
+          <div className="col-lg-6 animate-fade-in">
+            <div className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-laravel-soft mb-4" style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--laravel)' }}>
+              <span className="position-relative d-inline-flex" style={{ width: 8, height: 8 }}>
+                <span className="animate-ping position-absolute w-100 h-100 rounded-circle" style={{ background: 'var(--laravel)', opacity: 0.75 }}></span>
+                <span className="position-relative d-inline-flex rounded-circle w-100 h-100" style={{ background: 'var(--laravel)' }}></span>
               </span>
               <span>Laravel Expert</span>
             </div>
-            
-            <div className="space-y-3">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-                IBRAHEM KEZZO
-              </h2>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight">
-                {t('hero.title')}
-                <span className="text-laravel">.</span>
-              </h1>
-            </div>
-            
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-lg">
+
+            <h2 className="fw-bold mb-1" style={{ fontSize: '2rem', letterSpacing: '-0.02em' }}>
+              IBRAHEM KEZZO
+            </h2>
+            <h1 className="fw-bold mb-4" style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', letterSpacing: '-0.02em' }}>
+              {t('hero.title')}
+              <span className="text-laravel">.</span>
+            </h1>
+
+            <p className="lead text-secondary mb-4" style={{ maxWidth: '32rem' }}>
               {t('hero.subtitle')}
             </p>
-            
-            <div className="flex flex-wrap gap-4">
-              <a href="#contact" className="btn-primary inline-flex items-center">
+
+            <div className="d-flex flex-wrap gap-3">
+              <a href="#contact" className="btn btn-laravel d-inline-flex align-items-center">
                 {t('hero.cta')}
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ms-2" size={16} />
               </a>
-              <a href="#portfolio" className="btn-outline">
+              <a href="#portfolio" className="btn btn-outline-dark-custom">
                 {t('hero.secondary')}
               </a>
             </div>
           </div>
-          
-          <div className="relative animate-fade-in-right">
-            <div className="aspect-square max-w-md mx-auto relative">
-              <div className="absolute inset-0 bg-gradient-to-tr from-laravel/20 to-primary/5 rounded-full blur-3xl opacity-50"></div>
-              
-              <div className="relative z-10 h-full w-full">
-                {/* Main Profile Image */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative">
-                    <div className="w-80 h-80 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl backdrop-blur-sm bg-white/10 dark:bg-gray-900/10">
-                      <img src="/lovable-uploads/fdfdb052-714e-4179-9c14-376a7b6efdf4.png" alt="Ibrahem Kezzo - Laravel Developer" className="w-full h-full object-cover object-center" />
-                    </div>
-                    {/* Subtle glow effect around the image */}
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-laravel/10 to-primary/5 blur-xl opacity-30"></div>
-                  </div>
+
+          <div className="col-lg-6 animate-fade-in-right">
+            <div className="position-relative mx-auto" style={{ maxWidth: '28rem', aspectRatio: '1' }}>
+              {/* Glow */}
+              <div className="position-absolute top-0 start-0 w-100 h-100 rounded-circle" style={{
+                background: 'linear-gradient(135deg, rgba(var(--laravel-rgb), 0.2), rgba(100, 100, 255, 0.05))',
+                filter: 'blur(60px)',
+                opacity: 0.5,
+              }}></div>
+
+              {/* Profile Image */}
+              <div className="position-absolute top-50 start-50 translate-middle">
+                <div className="rounded-circle overflow-hidden shadow-lg" style={{
+                  width: 320, height: 320,
+                  border: '4px solid rgba(255,255,255,0.2)',
+                  background: 'rgba(255,255,255,0.1)',
+                }}>
+                  <img
+                    src="/lovable-uploads/fdfdb052-714e-4179-9c14-376a7b6efdf4.png"
+                    alt="Ibrahem Kezzo - Laravel Developer"
+                    className="w-100 h-100"
+                    style={{ objectFit: 'cover', objectPosition: 'center' }}
+                  />
                 </div>
-                
-                {/* Floating Tech Icons */}
-                <div className="absolute top-1/2 mt-16 left-1 glass p-4 shadow-lg animate-logo-float rounded-2xl mx-[72px] my-[135px]">
-                  <GitBranch className="h-10 w-10 text-laravel" />
-                </div>
-                
-                <div style={{
-                animationDelay: "0.5s"
-              }} className="absolute top-1 right-1/6 glass rounded-2xl p-4 shadow-lg animate-logo-float mx-[49px] my-[100px]">
-                  <Code className="h-10 w-10 text-primary" />
-                </div>
-                
-                <div style={{
-                animationDelay: "1s"
-              }} className="absolute bottom-1/4 left-1/6 glass rounded-2xl p-4 shadow-lg animate-logo-float my-[17px]">
-                  <Database className="h-10 w-10 text-laravel" />
-                </div>
+              </div>
+
+              {/* Floating Icons */}
+              <div className="position-absolute glass rounded-4 p-3 shadow animate-logo-float"
+                style={{ bottom: '5%', left: '5%' }}>
+                <GitBranch size={40} className="text-laravel" />
+              </div>
+
+              <div className="position-absolute glass rounded-4 p-3 shadow animate-logo-float"
+                style={{ top: '10%', right: '10%', animationDelay: '0.5s' }}>
+                <Code size={40} style={{ color: 'var(--bs-body-color)' }} />
+              </div>
+
+              <div className="position-absolute glass rounded-4 p-3 shadow animate-logo-float"
+                style={{ bottom: '25%', left: '-5%', animationDelay: '1s' }}>
+                <Database size={40} className="text-laravel" />
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default Hero;

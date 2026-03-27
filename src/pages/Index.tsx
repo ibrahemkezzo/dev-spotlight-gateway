@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { LanguageProvider } from '../context/LanguageContext';
 import { ThemeProvider } from '../context/ThemeContext';
@@ -14,17 +13,15 @@ const Index: React.FC = () => {
   return (
     <LanguageProvider>
       <ThemeProvider>
-        <div className="min-h-screen bg-background dark:bg-gray-900 transition-colors duration-200">
-          <Navbar />
-          <main>
-            <Hero />
-            <About />
-            <Services />
-            <Portfolio />
-            <Contact />
-          </main>
-          <Footer />
-        </div>
+        <Navbar />
+        <main>
+          <Hero />
+          <About />
+          <Services />
+          <Portfolio />
+          <Contact />
+        </main>
+        <Footer />
       </ThemeProvider>
     </LanguageProvider>
   );
