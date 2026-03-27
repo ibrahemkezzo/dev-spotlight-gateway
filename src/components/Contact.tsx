@@ -1,18 +1,12 @@
-
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { useToast } from '@/hooks/use-toast';
 import { Github, Linkedin, Mail } from 'lucide-react';
 
 const Contact: React.FC = () => {
   const { t } = useLanguage();
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -22,144 +16,86 @@ const Contact: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
     setTimeout(() => {
-      toast({
-        title: t('contact.success'),
-        description: `Thanks ${formData.name}, I'll get back to you soon!`,
-      });
       setFormData({ name: '', email: '', message: '' });
       setIsSubmitting(false);
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 3000);
     }, 1500);
   };
 
   const socialLinks = [
-    { icon: <Github className="h-5 w-5" />, url: 'https://github.com/', label: 'GitHub' },
-    { icon: <Linkedin className="h-5 w-5" />, url: 'https://linkedin.com/in/', label: 'LinkedIn' },
-    { icon: <Mail className="h-5 w-5" />, url: 'mailto:contact@example.com', label: 'Email' },
+    { icon: <Github size={20} />, url: 'https://github.com/', label: 'GitHub' },
+    { icon: <Linkedin size={20} />, url: 'https://linkedin.com/in/', label: 'LinkedIn' },
+    { icon: <Mail size={20} />, url: 'mailto:contact@example.com', label: 'Email' },
   ];
 
   return (
-    <section id="contact" className="py-20">
+    <section id="contact" className="py-5">
       <div className="section-container">
-        <div className="space-y-4 text-center">
+        <div className="text-center mb-5">
           <h2 className="section-title">{t('contact.title')}</h2>
           <p className="section-subtitle mx-auto">{t('contact.subtitle')}</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-16">
-          <div className="space-y-6 animate-fade-in">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-2">
-                  {t('contact.name')}
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-laravel focus:border-transparent transition-all"
-                />
+        <div className="row g-5">
+          <div className="col-lg-6 animate-fade-in">
+            {showSuccess && (
+              <div className="alert alert-success mb-4">{t('contact.success')}</div>
+            )}
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="name" className="form-label fw-medium">{t('contact.name')}</label>
+                <input type="text" className="form-control form-control-lg" id="name" name="name" value={formData.name} onChange={handleChange} required />
               </div>
-              
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
-                  {t('contact.email')}
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-laravel focus:border-transparent transition-all"
-                />
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label fw-medium">{t('contact.email')}</label>
+                <input type="email" className="form-control form-control-lg" id="email" name="email" value={formData.email} onChange={handleChange} required />
               </div>
-              
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2">
-                  {t('contact.message')}
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={5}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-laravel focus:border-transparent transition-all"
-                />
+              <div className="mb-3">
+                <label htmlFor="message" className="form-label fw-medium">{t('contact.message')}</label>
+                <textarea className="form-control form-control-lg" id="message" name="message" rows={5} value={formData.message} onChange={handleChange} required />
               </div>
-              
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`btn-primary w-full flex justify-center items-center ${
-                  isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
-                }`}
-              >
+              <button type="submit" className="btn btn-laravel w-100 py-3 d-flex justify-content-center align-items-center" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
+                    <span className="spinner-border spinner-sm me-2" role="status"></span>
                     Processing...
                   </>
-                ) : (
-                  t('contact.send')
-                )}
+                ) : t('contact.send')}
               </button>
             </form>
           </div>
-          
-          <div className="glass p-8 rounded-2xl animate-fade-in-right">
-            <h3 className="text-2xl font-bold mb-6">Connect With Me</h3>
-            
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <p className="text-muted-foreground">
-                  I'm currently available for freelance work. If you have a project that you want to get started or think you need my help with something, then get in touch.
-                </p>
-                
-                <div className="flex flex-wrap gap-3 mt-6">
-                  {socialLinks.map((link, index) => (
-                    <a
-                      key={index}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-full bg-background hover:bg-laravel hover:text-white transition-colors"
-                    >
-                      {link.icon}
-                      <span>{link.label}</span>
-                    </a>
-                  ))}
-                </div>
+
+          <div className="col-lg-6 animate-fade-in-right">
+            <div className="glass rounded-4 p-4 p-md-5 h-100">
+              <h3 className="fw-bold fs-4 mb-4">Connect With Me</h3>
+              <p className="text-secondary mb-4">
+                I'm currently available for freelance work. If you have a project that you want to get started or think you need my help with something, then get in touch.
+              </p>
+
+              <div className="d-flex flex-wrap gap-2 mb-5">
+                {socialLinks.map((link, i) => (
+                  <a key={i} href={link.url} target="_blank" rel="noopener noreferrer"
+                    className="btn btn-outline-secondary rounded-pill d-inline-flex align-items-center gap-2 px-3">
+                    {link.icon}
+                    <span>{link.label}</span>
+                  </a>
+                ))}
               </div>
-              
-              <div>
-                <h4 className="text-lg font-semibold mb-3">Working Hours</h4>
-                <ul className="space-y-2">
-                  <li className="flex justify-between">
-                    <span>Monday - Friday:</span>
-                    <span>9:00 AM - 6:00 PM</span>
-                  </li>
-                  <li className="flex justify-between">
-                    <span>Saturday:</span>
-                    <span>10:00 AM - 4:00 PM</span>
-                  </li>
-                  <li className="flex justify-between">
-                    <span>Sunday:</span>
-                    <span>Closed</span>
-                  </li>
-                </ul>
-              </div>
+
+              <h4 className="fw-semibold fs-5 mb-3">Working Hours</h4>
+              <ul className="list-unstyled">
+                <li className="d-flex justify-content-between py-2 border-bottom">
+                  <span>Monday - Friday:</span><span>9:00 AM - 6:00 PM</span>
+                </li>
+                <li className="d-flex justify-content-between py-2 border-bottom">
+                  <span>Saturday:</span><span>10:00 AM - 4:00 PM</span>
+                </li>
+                <li className="d-flex justify-content-between py-2">
+                  <span>Sunday:</span><span>Closed</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
